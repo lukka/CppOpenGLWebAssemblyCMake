@@ -129,13 +129,13 @@ Obtain and install the [Emscripten SDK](https://kripken.github.io/emscripten-sit
     >emcmake cmake path/to/sources/
   ````
 
-##### Using OpenFolder/CMake on Visual Studio
+#### Using OpenFolder/CMake on Visual Studio
 
 In the repository there is a CMakeSettings.json file with preset configurations for Windows and Linux.
 
 Set the correct IP address for the target Linux machine you want to build to, adding the address to the [Connection Manager](https://docs.microsoft.com/en-us/cpp/linux/connect-to-your-remote-linux-computer).
 
-## Run the sample with ```emrun```
+### Run the WebAssembly application with ```emrun```
 
 Run the following command from the WebApplication directory:
 
@@ -182,6 +182,6 @@ This is the list of files must be the following, named after the chip names:
  - 51xx.bin
  - 54xx.bin
 
-This is the picture of the cooinop:<br>
+This is the picture of the coin-op:<br>
 <img src="https://portalvhds7yxyw9gmh5cw6.blob.core.windows.net/wasm-binary-files/coinop.jpg">
 
