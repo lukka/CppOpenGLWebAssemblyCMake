@@ -1,0 +1,133 @@
+<html>
+
+<head>
+    <title>WebAssembly - Performance Test</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <link rel="manifest" href="manifest.json">
+    <style>
+        body {
+            font-family: arial;
+            margin: 0;
+            padding: none;
+        }
+
+        .emscripten {
+            padding-right: 0;
+            margin-left: auto;
+            margin-right: auto;
+            margin: 0px;
+            border: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            display: block;
+        }
+
+        div.emscripten {
+            text-align: center;
+        }
+
+        div.emscripten_border {
+            border: 1px solid black;
+        }
+
+        /* the canvas *must not* have any border or padding, or mouse coords will be wrong */
+
+        canvas.emscripten {
+            border: 0px none;
+            background-color: black;
+        }
+    </style>
+    <script type="text/javascript">  var appInsights = window.appInsights || function (a) { function b(a) { c[a] = function () { var b = arguments; c.queue.push(function () { c[a].apply(c, b) }) } } var c = { config: a }, d = document, e = window; setTimeout(function () { var b = d.createElement("script"); b.src = a.url || "https://az416426.vo.msecnd.net/scripts/a/ai.0.js", d.getElementsByTagName("script")[0].parentNode.appendChild(b) }); try { c.cookie = d.cookie } catch (a) { } c.queue = []; for (var f = ["Event", "Exception", "Metric", "PageView", "Trace", "Dependency"]; f.length;)b("track" + f.pop()); if (b("setAuthenticatedUserContext"), b("clearAuthenticatedUserContext"), b("startTrackEvent"), b("stopTrackEvent"), b("startTrackPage"), b("stopTrackPage"), b("flush"), !a.disableExceptionTracking) { f = "onerror", b("_" + f); var g = e[f]; e[f] = function (a, b, d, e, h) { var i = g && g(a, b, d, e, h); return !0 !== i && c["_" + f](a, b, d, e, h), i } } return c }({ instrumentationKey: "b6b54f01-5218-4112-86fe-31e951f6a00f" }); window.appInsights = appInsights, appInsights.queue && 0 === appInsights.queue.length && appInsights.trackPageView();</script>
+    <script>
+        var Module =
+        {
+            canvas: document.getElementById("GLCanvas"),
+            preRun: [],
+            postRun: [],
+            printErr: function () {
+                console.warn(Array.prototype.slice.call(arguments).join(" "));
+            },
+            print: function () {
+                console.warn(Array.prototype.slice.call(arguments).join(" "));
+            }
+        };
+
+        var _lastTime;
+
+        function getGLCanvas() {
+            return document.getElementById("GLCanvas");
+        }
+
+        function onDeviceMotion(eventData) {
+            var now = performance.now();
+            var intervalTime = now - _lastTime;
+            var rotationRate = eventData.rotationRate;
+            var acceleration = eventData.accelerationIncludingGravity;
+            if (rotationRate != null && rotationRate.alpha != null &&
+                rotationRate.beta != null && rotationRate.gamma != null) {
+                Module.get_app().HandleRotation(intervalTime,
+                    rotationRate.alpha, rotationRate.beta, rotationRate.gamma);
+            }
+            else if (acceleration != null && acceleration.x != null &&
+                acceleration.y != null && acceleration.z != null) {
+                Module.get_app().handleAcceleration(intervalTime,
+                    acceleration.x, acceleration.y, acceleration.z);
+            }
+            _lastTime = now;
+        }
+
+        function initSensors() {
+            window.addEventListener('devicemotion', onDeviceMotion, true);
+        }
+
+        // Main entry point of the Galaga game.
+        function main() {
+            initSensors();
+        }
+
+        // Load the wasm file with Fetch APIs.
+        function onBodyLoad() {
+            fetch('wasm_app_wasm.wasm').then(response =>
+                response.arrayBuffer()
+            ).then(bytes => {
+                // Once the wasm file has been loaded, the onRuntimeInitialized callback
+                // will be invoked.
+                Module.wasmBinary = bytes;
+                Module.canvas = (function () {
+                    return getGLCanvas();
+                })();
+                Module.onRuntimeInitialized = function () {
+                    main();
+                };
+
+                var script = document.createElement('script');
+                script.src = "wasm_app_wasm.js";
+                document.body.appendChild(script);
+            });
+        };
+
+    </script>
+    <!-- <script type="text/javascript" src="webaudiofix.js" /> ->
+    <!-- using .appendChild instead. <script async src="galaga_emcc_app_wasm.js"></script> -->
+</head>
+
+<body style="background:black; " onload="onBodyLoad()">
+    <div style="width:100%; background:black;">
+        <a style="width:100%; display:inline-block; text-align:center;color:white; line-height: 28px;" onclick="GLFW.requestFullscreen();"
+            href="javascript:void(0);">
+            PRESS FOR FULLSCREEN</a>
+    </div>
+
+    <div class="emscripten_border">
+        <canvas class="emscripten" id="GLCanvas">
+            This web browser doesn't support canvas tag.
+        </canvas>
+    </div>
+
+</body>
+
+</html>

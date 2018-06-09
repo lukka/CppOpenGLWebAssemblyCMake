@@ -1,0 +1,7 @@
+{
+  "short_name": "WASM_PERF",
+  "name": "WebAssembly Performance Demo",
+  "start_url": "wasm_app.html",
+  "display": "fullscreen",
+  "orientation": "portrait"
+}
