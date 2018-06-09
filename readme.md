@@ -95,6 +95,7 @@ Run from the build directory:
 
   ```bash
     >emcmake cmake ./path/to/src/
+    >make -j
   ```
 ### Detailed instructions
 
@@ -116,6 +117,7 @@ Obtain and install the [Emscripten SDK](https://kripken.github.io/emscripten-sit
 
   ```bash
     >emcmake cmake ..
+    >make -j
   ```
 
 #### Windows special notes
