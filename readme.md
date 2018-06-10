@@ -139,9 +139,10 @@ Set the correct IP address for the target Linux machine you want to build to, ad
 
 ### Run the WebAssembly application with ```emrun```
 
-Run the following command from the WebApplication directory:
+Run the following command from the build directory:
 
   ```bash
+    >cd path/to/build/directory
     >emrun --no_browser --port=<AVAIL_PORT> --hostname=<IP-ADDRESS> .
   ```
 
