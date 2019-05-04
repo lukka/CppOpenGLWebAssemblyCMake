@@ -6,7 +6,8 @@ pool:
   name: Hosted Ubuntu 1604
   demands: cmake
 
-container: trzeci/emscripten
+container: 
+  image: trzeci/emscripten:latest
 
 steps:
 - bash: |
