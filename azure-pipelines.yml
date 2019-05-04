@@ -4,7 +4,6 @@ trigger:
 
 pool:
   name: Hosted Ubuntu 1604
-  demands: cmake
 
 container: 
   image: trzeci/emscripten:latest
