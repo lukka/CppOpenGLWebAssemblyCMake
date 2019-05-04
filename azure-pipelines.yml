@@ -1,0 +1,22 @@
+
+trigger:
+- master
+
+pool:
+  name: Hosted Ubuntu 1604
+  demands: cmake
+
+container: trzeci/emscripten
+
+steps:
+- bash: |
+   sudo apt-get install xorg-dev libglu1-mesa-dev libalut-dev
+  displayName: 'Bash Script'
+
+- task: lucappa.build-cmake-ninja-vcpkg-tasks.c9746028-447e-4fe1-97c8-332d42d68358.Run CMake and Ninja@0
+  displayName: CMakeSettings.json
+  inputs:
+    CMakeListsOrSettingsJson: CMakeSettingsJson
+    ConfigurationFilter: 'Emscripten Linux Debug'
+    SourceShellScript: emcmake
+    BuildWithCMake: true
