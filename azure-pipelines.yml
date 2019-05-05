@@ -8,6 +8,9 @@ pool:
 container: 
   image: trzeci/emscripten:latest
 
+variables:
+  system.debug: true
+
 steps:
 - task: lucappa.build-cmake-ninja-vcpkg-tasks.c9746028-447e-4fe1-97c8-332d42d68358.Run CMake and Ninja@0
   displayName: CMakeSettings.json
