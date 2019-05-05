@@ -16,6 +16,6 @@ steps:
   displayName: CMakeSettings.json
   inputs:
     CMakeListsOrSettingsJson: CMakeSettingsJson
-    ConfigurationFilter: 'Emscripten Linux Debug'
+    ConfigurationFilter: 'Emscripten Linux Release'
     SourceShellScript: emcmake
     BuildWithCMake: true
