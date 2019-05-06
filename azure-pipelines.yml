@@ -17,5 +17,5 @@ steps:
   inputs:
     CMakeListsOrSettingsJson: CMakeSettingsJson
     ConfigurationFilter: 'Emscripten Linux Release'
-    SourceShellScript: emcmake
+    CMakeWrapperCommand: emcmake
     BuildWithCMake: true
