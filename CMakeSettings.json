@@ -151,6 +151,7 @@
       "generator": "Unix Makefiles",
       "buildRoot": "${env.USERPROFILE}\\CMakeBuilds\\${workspaceHash}\\build\\${name}",
       "installRoot": "${env.USERPROFILE}\\CMakeBuilds\\${workspaceHash}\\install\\${name}",
+      "configurationType": "${CONFIGURATION}",
       "remoteMachineName": "::1",
       "remoteCMakeListsRoot": "/var/tmp/src/${workspaceHash}/${name}/",
       "cmakeExecutable": "/usr/bin/cmake",
@@ -159,7 +160,7 @@
       "remoteCopySources": true,
       "remoteCopySourcesOutputVerbosity": "Normal",
       "remoteCopySourcesMethod": "rsync",
-      "cmakeCommandArgs": "-DCMAKE_TOOLCHAIN_FILE=$EMSCRIPTEN/cmake/Modules/Platform/Emscripten.cmake -DCMAKE_BUILD_TYPE=${CONFIGURATION}",
+      "cmakeCommandArgs": "",
       "buildCommandArgs": "VERBOSE=1",
       "ctestCommandArgs": "",
       "inheritEnvironments": [ "linux_x64" ]
