@@ -8,6 +8,8 @@ This project shows how to create a C++ based application for:
 
 built with CMake for any target.
 
+[![Build Status](https://dev.azure.com/CppBuild/CppBuildTasks/_apis/build/status/wasm-and-native-win-linux-lukka.CppOpenGLWebAssemblyCMake?branchName=master)](https://dev.azure.com/CppBuild/CppBuildTasks/_build/latest?definitionId=8&branchName=master)
+
 ```
 +-----+
 |     |===>    C++ compiler  ==>  native x64 binary for Linux/macOS/Windows
