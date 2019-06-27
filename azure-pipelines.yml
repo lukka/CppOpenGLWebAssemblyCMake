@@ -24,7 +24,7 @@ jobs:
     name: Hosted Ubuntu 1604
   steps:
     - script: |
-        sudo apt-get install xorg-dev libglu1-mesa-dev libalut-dev |
+        sudo apt-get update && sudo apt-get install xorg-dev libglu1-mesa-dev libalut-dev |
         echo "##vso[task.setvariable variable=CC]`which gcc-7`" |
         echo "##vso[task.setvariable variable=CXX]`which g++-7`"
     - task: lucappa.cmake-ninja-vcpkg-tasks.f2b1ec7d-bc54-4cc8-b9ed-1bc7f37c9dc6.run-cmake@0
