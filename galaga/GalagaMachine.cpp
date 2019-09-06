@@ -13,7 +13,6 @@
 #include "emulator/DeviceInput.h"
 #include "emulator/Timer.h"
 
-
 namespace Galaga
 {
 // static
@@ -99,7 +98,7 @@ void GalagaMachine::Draw(Frame& frame)
 
 void GalagaMachine::GetAudioSamples(AudioFrame& audioFrame)
 {
-    // Generate a sinusoidal sound for testing purposes.
+// Generate a sinusoidal sound for testing purposes.
 #if 0
         double angle = 0;
         std::vector<int> samples(960);
@@ -292,4 +291,5 @@ void GalagaMachine::SetProgramCounterListener(
 {
     this->mainCpu->SetProgramCounterListener(pcListener);
 }
+
 }  // namespace Galaga

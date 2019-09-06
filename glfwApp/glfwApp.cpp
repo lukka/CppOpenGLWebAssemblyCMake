@@ -409,6 +409,7 @@ bool glfwApp::initialize()
     std::function<void(uint16_t)> programCounterListener(
         GameStateTracker::identifyGameState);
     _galagaMachine.SetProgramCounterListener(programCounterListener);
+
     return ret;
 }
 

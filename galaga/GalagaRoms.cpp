@@ -3,7 +3,6 @@
 #include <iostream>
 #include <vector>
 
-
 namespace Galaga
 {
 GalagaRoms::GalagaRoms() {}
@@ -20,7 +19,9 @@ void GalagaRoms::LoadFile(std::string const& fileName,
     size = ftell(f);
     fseek(f, 0, SEEK_SET);
     out.resize(size);
-    if (size != fread(&out[0], sizeof(uint8_t), size, f)) assert(false);
+    int size2 = fread(&out[0], sizeof(uint8_t), size, f);
+    assert(size == size2 && "fread failed");
+    size = size2;
     std::cout << "Loaded: " << fileName << "  size " << size << "\n";
     fclose(f);
 }
@@ -31,7 +32,7 @@ const ByteArray& GalagaRoms::ReadRom(const std::string& rom)
     if (roms.end() == it)
     {
         std::vector<uint8_t> fileContent;
-        std::cout << "Loading ROM file: "<< rom << "\n";
+        std::cout << "Loading ROM file: " << rom << "\n";
         LoadFile(rom, fileContent);
         roms[rom] = fileContent;
         it = roms.find(rom);

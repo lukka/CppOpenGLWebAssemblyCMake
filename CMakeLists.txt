@@ -49,7 +49,7 @@ set(GALAGA_MACHINE_LIBRARIES galaga_lib z80_lib mb88xx_lib emulator_lib)
 if(EMSCRIPTEN)
     add_definitions(-DEMSCRIPTEN)
 
-    set(CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} --bind --memory-init-file 0 -s TOTAL_MEMORY=64*1024*1024")
+    set(CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} --bind --memory-init-file 0 -s TOTAL_MEMORY=64MB")
     # Embed files at build-dir/data
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} --embed-file \"${CMAKE_BINARY_DIR}/data@data\"")
     

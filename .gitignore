@@ -21,3 +21,4 @@ buildwasm
 buildjswasm
 .vscode
 .vs
+/data
