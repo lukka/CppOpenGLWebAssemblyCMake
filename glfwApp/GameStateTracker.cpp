@@ -20,7 +20,7 @@ size_t GameStateTracker::playToHighCount = 0;
 void GameStateTracker::identifyGameState(uint16_t prgCounter)
 {
     bool doGameStateStep = false;
-    // Keep trck of the instruction executed more often.
+    // Keep track of the instruction executed more often.
     if (++memoryCopy[prgCounter] > oldMaxValue) maxAddress = prgCounter;
 
     // Check elapsed time each amount of executed instructions.

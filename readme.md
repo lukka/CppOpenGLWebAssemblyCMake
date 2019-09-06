@@ -115,10 +115,11 @@ Obtain and install the [Emscripten SDK](https://kripken.github.io/emscripten-sit
   ```
    Note on Windows using cmd.exe, you just need to run 'emsdk_env.bat', the 'source' at the beginning it is not needed.
 
-3. run:
+3. run from the build directory:
 
   ```bash
-    >emcmake cmake ..
+    >/path/to/emsdk/emsdk_env.sh
+    >emcmake cmake path/to/src
     >make -j
   ```
 
