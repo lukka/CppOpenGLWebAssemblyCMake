@@ -1,0 +1,48 @@
+# Copyright (c) 2019-2020 Luca Cappa
+# Released under the term specified in file LICENSE.txt
+# SPDX short identifier: MIT
+name: hosted-wasm-macos-linux
+on: [push, pull_request]
+
+jobs:
+  ubuntu_native_hosted:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+        with:
+          submodules: true
+      - name: install packages
+        run: |
+          sudo apt-get update -m && sudo apt-get install xorg-dev libglu1-mesa-dev libalut-dev
+        shell: bash
+      - name: Build Linux native executable
+        uses: lukka/run-cmake@v0
+        with:
+          cmakeListsOrSettingsJson: CMakeSettingsJson
+          configurationRegexFilter: 'Linux-Release'
+
+  macos_native_release_x64_hosted:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v1
+        with:
+          submodules: true
+      - name: Build Linux native executable
+        uses: lukka/run-cmake@v0
+        with:
+          cmakeListsOrSettingsJson: CMakeSettingsJson
+          configurationRegexFilter: 'Linux-Release'
+
+  ubuntu_web_assembly_hosted:
+    runs-on: ubuntu-latest
+    container: trzeci/emscripten:latest
+    steps:
+      - uses: actions/checkout@v1
+        with:
+          submodules: true
+      - name: Build with CMakeSettings.json targeting WASM
+        uses: lukka/run-cmake@v0
+        with:
+          cmakeListsOrSettingsJson: CMakeSettingsJson
+          configurationRegexFilter: 'Emscripten Linux Release'
+          cmakeWrapperCommand: emcmake
