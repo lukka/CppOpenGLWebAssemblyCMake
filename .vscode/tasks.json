@@ -1,0 +1,13 @@
+{
+  // See https://go.microsoft.com/fwlink/?LinkId=733558
+  // for the documentation about the tasks.json format
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "emrun",
+      "type": "shell",
+      "command": "emrun --no_browser --serve_after_close --serve_after_exit --port=6931 --hostname=0.0.0.0 ${workspaceFolder}/build",
+      "problemMatcher": []
+    }
+  ]
+}

@@ -148,7 +148,7 @@
         }
       ],
       "name": "Emscripten Linux Release",
-      "generator": "Unix Makefiles",
+      "generator": "Ninja",
       "buildRoot": "${env.USERPROFILE}\\CMakeBuilds\\${workspaceHash}\\build\\${name}",
       "installRoot": "${env.USERPROFILE}\\CMakeBuilds\\${workspaceHash}\\install\\${name}",
       "configurationType": "${CONFIGURATION}",
@@ -161,7 +161,7 @@
       "remoteCopySourcesOutputVerbosity": "Normal",
       "remoteCopySourcesMethod": "rsync",
       "cmakeCommandArgs": "",
-      "buildCommandArgs": "VERBOSE=1",
+      "buildCommandArgs": "-v",
       "ctestCommandArgs": "",
       "inheritEnvironments": [ "linux_x64" ]
     }

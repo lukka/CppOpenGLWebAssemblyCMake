@@ -1,0 +1,9 @@
+[
+  {
+    "name": "Emscripten SDK - emcc",
+    "toolchainFile": "/emsdk/upstream/emscripten/cmake/Modules/Platform/Emscripten.cmake",
+    "preferredGenerator": {
+      "name": "Ninja"
+    }
+  }
+]

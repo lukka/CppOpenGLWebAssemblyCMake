@@ -36,6 +36,7 @@ EMSCRIPTEN_BINDINGS(galaga_machine)
         .function("getGalagaMachine", &glfwApp::getGalagaMachine,
                   emscripten::allow_raw_pointers())
         .function("enterFullscreen", &glfwApp::enterFullscreen);
+
     function("get_app", &glfwApp::get_app, emscripten::allow_raw_pointers());
 }
 #endif
@@ -61,8 +62,8 @@ EM_BOOL updateFramebufferSize(int eventType, const EmscriptenUiEvent *uiEvent,
                               void *userData)
 {
     double width(0), height(0);
-    emscripten_get_element_css_size("GLCanvas", &width, &height);
-    emscripten_set_canvas_element_size("GLCanvas", int(width), int(height));
+    emscripten_get_element_css_size("#canvas", &width, &height);
+    emscripten_set_canvas_element_size("#canvas", int(width), int(height));
     PRINTIFCHANGED("width", width);
     return EM_TRUE;
 }
@@ -70,7 +71,7 @@ EM_BOOL updateFramebufferSize(int eventType, const EmscriptenUiEvent *uiEvent,
 EM_BOOL updateCanvasResize(int eventType, const void *reserved, void *userData)
 {
     double width, height;
-    emscripten_get_element_css_size("GLCanvas", &width, &height);
+    emscripten_get_element_css_size("#canvas", &width, &height);
     PRINTIFCHANGED("width", width);
     canvasWidth = width;
     canvasHeight = height;
@@ -112,11 +113,13 @@ EM_BOOL touchStartCb(int eventType, const EmscriptenTouchEvent *touchEvent,
         else  // any state is ok.
         {
             firstTouch = touchEvent->touches[0];  // Store a copy.
-            gM->set_MoveLeft(firstTouch.canvasX < (canvasWidth / 2.));
-            gM->set_MoveRight(firstTouch.canvasX > (canvasWidth / 2.));
+            std::cout << "targetX:" << firstTouch.targetX << ", canvasWidth:" << canvasWidth << "\n";
+
+            gM->set_MoveLeft(firstTouch.targetX < (canvasWidth / 2.));
+            gM->set_MoveRight(firstTouch.targetX > (canvasWidth / 2.));
         }
     }
-    return true;  // Consume the event, i.e. preventDefault();
+    return EM_TRUE;  // Consume the event, i.e. preventDefault();
 }
 
 EM_BOOL touchMoveCb(int eventType, const EmscriptenTouchEvent *touchEvent,
@@ -128,17 +131,17 @@ EM_BOOL touchMoveCb(int eventType, const EmscriptenTouchEvent *touchEvent,
         if (GameStateTracker::gameState == GameStateTracker::HIGHSCORE &&
             touchEvent->numTouches > 1)
         {
-            // Hold donw the button in highscore mode.
+            // Hold down the button in highscore mode.
             gM->set_Button1(true);
         }
         else  // any state is ok.
         {
             firstTouch = touchEvent->touches[0];  // Store a copy.
-            gM->set_MoveLeft(firstTouch.canvasX < (canvasWidth / 2.));
-            gM->set_MoveRight(firstTouch.canvasX > (canvasWidth / 2.));
+            gM->set_MoveLeft(firstTouch.targetX < (canvasWidth / 2.));
+            gM->set_MoveRight(firstTouch.targetX > (canvasWidth / 2.));
         }
     }
-    return true;
+    return EM_TRUE;
 }
 
 EM_BOOL touchEndCb(int eventType, const EmscriptenTouchEvent *touchEvent,
@@ -159,7 +162,7 @@ EM_BOOL touchEndCb(int eventType, const EmscriptenTouchEvent *touchEvent,
         gM->set_MoveRight(false);
     }
 
-    return true;
+    return EM_TRUE;
 }
 
 EM_BOOL touchCancelCb(int eventType, const EmscriptenTouchEvent *touchEvent,
@@ -169,7 +172,7 @@ EM_BOOL touchCancelCb(int eventType, const EmscriptenTouchEvent *touchEvent,
     gM->set_MoveLeft(false);
     gM->set_MoveRight(false);
     std::cout << "touchCanceled:" << eventType << "\n";
-    return true;
+    return EM_TRUE;
 }
 
 #endif
@@ -394,13 +397,13 @@ bool glfwApp::initialize()
 #if defined(EMSCRIPTEN)
     // Init resize callback.
     double width, height;
-    emscripten_get_element_css_size("GLCanvas", &width, &height);
+    emscripten_get_element_css_size("#canvas", &width, &height);
     canvasWidth = width;
     canvasHeight = height;
-    emscripten_set_canvas_element_size("GLCanvas", int(width), int(height));
-    emscripten_set_resize_callback(nullptr, nullptr, false,
+    emscripten_set_canvas_element_size("#canvas", int(width), int(height));
+    emscripten_set_resize_callback("#canvas", nullptr, false,
                                    &updateFramebufferSize);
-    emscripten_set_fullscreenchange_callback(nullptr, nullptr, false,
+    emscripten_set_fullscreenchange_callback("#canvas", nullptr, false,
                                              &updateFullscreenStatus);
 #endif
 
@@ -610,7 +613,7 @@ bool glfwApp::onRender(float secDeltaTime)
     // Canvas size management
 #if defined(EMSCRIPTEN)
     double width, height;
-    emscripten_get_element_css_size("GLCanvas", &width, &height);
+    emscripten_get_element_css_size("#canvas", &width, &height);
     _wndSize.x = width;
     _wndSize.y = height;
     PRINTIFCHANGED("_wndSize.x", _wndSize.x);
@@ -655,7 +658,7 @@ bool glfwApp::onRender(float secDeltaTime)
     cameraDistance = (edgeX) / tan(FOV / 2.f);
 
 #if defined(DEBUG)
-    // std::cout <<"camDist="<< cameraDistance << "\n";
+    //std::cout <<"camDist="<< cameraDistance << "\n";
 #endif
 
     float cosAngle = 0.9f;
@@ -792,7 +795,7 @@ void glfwApp::enterFullscreen()
     fsStrategy.canvasResizedCallback = &updateCanvasResize;
     fsStrategy.canvasResizedCallbackUserData = nullptr;
     EMSCRIPTEN_RESULT res;
-    res = emscripten_request_fullscreen_strategy(nullptr, false, &fsStrategy);
+    res = emscripten_request_fullscreen_strategy("#canvas", false, &fsStrategy);
     std::cout << __FUNCTION__ << ":" << res << "\n";
 #else
     static glm::ivec2 oldSize;

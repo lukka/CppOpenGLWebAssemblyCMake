@@ -22,3 +22,5 @@ buildjswasm
 .vscode
 .vs
 /data
+.ninja_log
+.ninja_deps

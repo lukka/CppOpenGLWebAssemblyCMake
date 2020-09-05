@@ -58,81 +58,41 @@ wasm app on Chrome66/Win10 |13%|350fps|```=======```
 wasm app on Chrome66/macOS|25%|230fps|```====```
 native app on Linux | ?|?|```?```
 
+## Building and running the project
 
-## Building the native application
+### With VSCode using Docker
 
+The provided [Dockerfile](.devcontainer/Dockerfile) contains all you need to build and run this project (e.g. Emscripten SDK version 2.0+, gcc, CMake, Ninja).
 
-### Building natively for Linux/macOS/Windows
+Open the folder with VSCode using "Remote-Container: Open folder in container", 
 
-Just use CMake ordinarily, such as:
+Enable the CMake Tools extension for VSCode.
 
-   1) create a build directory;
-   2) generate in the build directory your project files:
+### Building the WebAssembly based application with Emscripten SDK
 
-       ```>cmake /path/to/sources/ -G "Unix Makefiles"```
-
-       Note: do not run the _cmake_ command from a shell for 
-       Emscripten (i.e. where emsdk_env.sh has been run!).
-   3) enjoy your generated project files with make/VisualStudio/XCode/Eclipse.
-
-#### Linux special notes
-
-You need X11 development files, these are packages to install on Debian-derived distros:
-
-```bash
-   >sudo apt-get install libx11-dev xorg-dev libglu1-mesa-dev libopenal-dev gdb
-```
-
-#### Windows/Visual Studio special notes
- 
-Ensure CMake 3.10 or newer is used, otherwise the ```/std:c++17``` could not be set, and it needs to be specified manually from the project 
-properties (under C++->Languages).
-
-
-## Building the WebAssembly based application with Emscripten SDK
-
-### TL;DR
-
-Run from the build directory:
+Create a running container from the [Dockerfile](.devcontainer/Dockerfile), mount the root of the repository onto /workspace/CppOpenGLWebAssemblyCMake/,
+and run:
 
   ```bash
-    >emcmake cmake ./path/to/src/
-    >make -j
-  ```
-### Detailed instructions
-
-Obtain and install the [Emscripten SDK](https://kripken.github.io/emscripten-site/docs/getting_started/downloads.html).
-
-1. Create a build directory, that is where CMake is going to generate build files:
-
-  ```bash
-    >mkdir builddirectory
+    >cd /workspace/CppOpenGLWebAssemblyCMake/
+    >mkdir build && cd build
+    >emcmake cmake -GNinja ..
+    >cmake --build .
   ```
 
-2. Set the environment variables for Emscripten:
-  ```bash
-    >source path/to/emscripten/emsdk_env.sh
-  ```
-   Note on Windows using cmd.exe, you just need to run 'emsdk_env.bat', the 'source' at the beginning it is not needed.
-
-3. run from the build directory:
+### Building the native application for Linux/macOS/Windows
 
   ```bash
-    >/path/to/emsdk/emsdk_env.sh
-    >emcmake cmake path/to/src
-    >make -j
+    >mkdir build && cd build
+    >cmake -GNinja ..
+    >cmake --build .
   ```
 
-#### Windows special notes
+You can replace Ninja with any project file generator you like, e.g. make/VisualStudio/XCode/Eclipse.
 
-   -  Install OpenAL 1.1 Core SDK from: http://openal.org/downloads/
-   -  On a command prompt as admin (not a PowerShell one!):
-  ```bash
-    >emsdk_env.bat
-    >set OPENALDIR=C:\Program Files (x86)\OpenAL 1.1 SDK\
-    >cd path/to/build/directory
-    >emcmake cmake path/to/sources/
-  ````
+### Run the native application 
+
+Run the executable created in the build directory.
 
 #### Using OpenFolder/CMake on Visual Studio
 
@@ -140,13 +100,26 @@ In the repository there is a CMakeSettings.json file with preset configurations 
 
 Set the correct IP address for the target Linux machine you want to build to, adding the address to the [Connection Manager](https://docs.microsoft.com/en-us/cpp/linux/connect-to-your-remote-linux-computer).
 
-### Run the WebAssembly application with ```emrun```
+##### Linux special notes
+
+You need X11 development files, these are packages to install on Debian-derived distros:
+
+```bash
+   >sudo apt-get install libx11-dev xorg-dev libglu1-mesa-dev libopenal-dev gdb
+```
+
+##### Windows/Visual Studio special notes
+ 
+Ensure CMake 3.10 or newer is used, otherwise the ```/std:c++17``` could not be set, and it needs to be specified manually from the project 
+properties (under C++->Languages).
+
+## Run the WebAssembly application with ```emrun```
 
 Run the following command from the build directory:
 
   ```bash
     >cd path/to/build/directory
-    >emrun --no_browser --port=<AVAIL_PORT> --hostname=<IP-ADDRESS> .
+    >emrun --no_browser --serve_after_close --serve_after_exit --port=6931 --hostname=0.0.0.0 .
   ```
 
 Notes:
@@ -155,7 +128,6 @@ Notes:
 2. Beware of the Firewall on the hosting machine: if you are not able to connect from
    the mobile phone to the server hosted on your laptop the Firewall is probably the
    cause.
-
 
 ## Galaga ROM files
 

@@ -1,0 +1,13 @@
+{
+  "cmake.configureSettings": {
+    "CMAKE_MAKE_PROGRAM": "/usr/bin/ninja",
+    "CMAKE_CROSSCOMPILING_EMULATOR": "/emsdk/node/12.18.1_64bit/bin/node"
+  },
+  "cmake.configureEnvironment": {
+    "EMSDK": "/emsdk"
+  },
+  "cmake.loggingLevel": "debug",
+  "cmake.buildArgs": [ ],
+  "cmake.buildToolArgs": ["-v"],
+  "C_Cpp.default.configurationProvider": "ms-vscode.cmake-tools"
+}
