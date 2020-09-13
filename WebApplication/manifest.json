@@ -3,5 +3,6 @@
   "name": "WebAssembly Performance Demo",
   "start_url": "wasm_app.html",
   "display": "fullscreen",
-  "orientation": "portrait"
+  "orientation": "portrait",
+  "scope": "/"
 }

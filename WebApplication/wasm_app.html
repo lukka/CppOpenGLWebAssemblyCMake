@@ -41,25 +41,11 @@
             background-color: black;
         }
     </style>
-    <script type="text/javascript">  var appInsights = window.appInsights || function (a) { function b(a) { c[a] = function () { var b = arguments; c.queue.push(function () { c[a].apply(c, b) }) } } var c = { config: a }, d = document, e = window; setTimeout(function () { var b = d.createElement("script"); b.src = a.url || "https://az416426.vo.msecnd.net/scripts/a/ai.0.js", d.getElementsByTagName("script")[0].parentNode.appendChild(b) }); try { c.cookie = d.cookie } catch (a) { } c.queue = []; for (var f = ["Event", "Exception", "Metric", "PageView", "Trace", "Dependency"]; f.length;)b("track" + f.pop()); if (b("setAuthenticatedUserContext"), b("clearAuthenticatedUserContext"), b("startTrackEvent"), b("stopTrackEvent"), b("startTrackPage"), b("stopTrackPage"), b("flush"), !a.disableExceptionTracking) { f = "onerror", b("_" + f); var g = e[f]; e[f] = function (a, b, d, e, h) { var i = g && g(a, b, d, e, h); return !0 !== i && c["_" + f](a, b, d, e, h), i } } return c }({ instrumentationKey: "b6b54f01-5218-4112-86fe-31e951f6a00f" }); window.appInsights = appInsights, appInsights.queue && 0 === appInsights.queue.length && appInsights.trackPageView();</script>
     <script>
-        var Module =
-        {
-            canvas: document.getElementById("GLCanvas"),
-            preRun: [],
-            postRun: [],
-            printErr: function () {
-                console.warn(Array.prototype.slice.call(arguments).join(" "));
-            },
-            print: function () {
-                console.warn(Array.prototype.slice.call(arguments).join(" "));
-            }
-        };
-
         var _lastTime;
 
         function getGLCanvas() {
-            return document.getElementById("GLCanvas");
+            return document.getElementById("canvas");
         }
 
         function onDeviceMotion(eventData) {
@@ -91,7 +77,7 @@
 
         // Load the wasm file with Fetch APIs.
         function onBodyLoad() {
-            fetch('wasm_app_wasm.wasm').then(response =>
+            fetch('wasm_app_emsdk.wasm').then(response =>
                 response.arrayBuffer()
             ).then(bytes => {
                 // Once the wasm file has been loaded, the onRuntimeInitialized callback
@@ -105,7 +91,7 @@
                 };
 
                 var script = document.createElement('script');
-                script.src = "wasm_app_wasm.js";
+                script.src = "wasm_app_emsdk.js";
                 document.body.appendChild(script);
             });
         };
@@ -117,17 +103,43 @@
 
 <body style="background:black; " onload="onBodyLoad()">
     <div style="width:100%; background:black;">
-        <a style="width:100%; display:inline-block; text-align:center;color:white; line-height: 28px;" onclick="GLFW.requestFullscreen();"
-            href="javascript:void(0);">
-            PRESS FOR FULLSCREEN</a>
+        <a style="width:100%; display:inline-block; text-align:center;color:white; line-height: 28px;"
+            onclick="Module.requestFullscreen(true, true);" href="javascript:void(0);">
+            ENTER FULLSCREEN</a>
     </div>
 
     <div class="emscripten_border">
-        <canvas class="emscripten" id="GLCanvas">
+        <canvas class="emscripten" id="canvas">
             This web browser doesn't support canvas tag.
         </canvas>
     </div>
 
+    <script>
+        var Module =
+        {
+            canvas: (function () {
+                var canvas = document.getElementById('canvas');
+
+                // As a default initial behavior, pop up an alert when webgl context is lost. To make your
+                // application robust, you may want to override this behavior before shipping!
+                // See http://www.khronos.org/registry/webgl/specs/latest/1.0/#5.15.2
+                canvas.addEventListener("webglcontextlost", function (e) { alert('WebGL context lost. You will need to reload the page.'); e.preventDefault(); }, false);
+
+                return canvas;
+            })(),
+
+            preRun: [],
+            postRun: [],
+            printErr: function () {
+                console.warn(Array.prototype.slice.call(arguments).join(" "));
+            },
+            print: function () {
+                console.warn(Array.prototype.slice.call(arguments).join(" "));
+            }
+        };
+
+
+    </script>
 </body>
 
 </html>

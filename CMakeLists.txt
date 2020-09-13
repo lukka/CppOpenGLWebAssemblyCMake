@@ -67,22 +67,23 @@ if(EMSCRIPTEN)
     # Use webgl2 and glfw3
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -s USE_WEBGL2=1 -s USE_GLFW=3")
     
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -s BINARYEN_ASYNC_COMPILATION=1 -s WASM=1 -s BINARYEN=1 -s \"BINARYEN_METHOD='native-wasm'\"")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -s BINARYEN_ASYNC_COMPILATION=1 -s WASM=1 -s BINARYEN=1 -s \"BINARYEN_METHOD='native-wasm'\" -s DISABLE_DEPRECATED_FIND_EVENT_TARGET_BEHAVIOR=1 -o app_wasm2.html")
     # Enable js output (no html).
-    set(CMAKE_EXECUTABLE_SUFFIX "_wasm.js")
+    #set(CMAKE_EXECUTABLE_SUFFIX "_wasm.js")
+    set(CMAKE_EXECUTABLE_SUFFIX "_emsdk.html")
     add_definitions(-DUSE_WASM)
 
     # Copy the content of the sourcedir/WebApplication directory
 	add_custom_command(TARGET wasm_app POST_BUILD
         COMMAND ${CMAKE_COMMAND} -E copy_directory
         ${CMAKE_SOURCE_DIR}/WebApplication ${CMAKE_BINARY_DIR}/
-        COMMENT "Copying files from src-dir/WebApplication/ to build-dir/")
+        COMMENT "Copying files from ${CMAKE_SOURCE_DIR}/WebApplication/ to ${CMAKE_BINARY_DIR}/WebApplication")
 
     # Copy assets to build-dir/data/ directory
     add_custom_command(TARGET wasm_app PRE_BUILD
         COMMAND ${CMAKE_COMMAND} -E copy_directory
         ${CMAKE_SOURCE_DIR}/data ${CMAKE_BINARY_DIR}/data
-        COMMENT "Copying files from src-dir/data/ to build-dir/data")
+        COMMENT "Copying files from ${CMAKE_SOURCE_DIR}/data/ to ${CMAKE_BINARY_DIR}/data")
 
 else()
 
@@ -109,6 +110,6 @@ else()
     add_custom_command(TARGET glfw_app POST_BUILD
         COMMAND ${CMAKE_COMMAND} -E copy_directory
         ${CMAKE_SOURCE_DIR}/data ${CMAKE_BINARY_DIR}/data
-        COMMENT "Copying files from src-dir/data/ to build-dir/data")
+        COMMENT "Copying files from ${CMAKE_SOURCE_DIR}/data/ to ${CMAKE_BINARY_DIR}/data")
 
 endif()
