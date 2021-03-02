@@ -2,10 +2,10 @@
     "name": "WASM",
     "build": {
         "dockerfile": "Dockerfile",
-        "forwardPorts": [
-            6931
-        ],
     },
+    "forwardPorts": [
+        6931
+    ],
     "extensions": [
         "ms-vscode.cpptools",
         "ms-vscode.cmake-tools"
