@@ -33,7 +33,7 @@ The source code of the application consists of:
 
 This animation is recorded from the native app:
 
-<img src="https://portalvhds7yxyw9gmh5cw6.blob.core.windows.net/wasm-binary-files/animation.gif"
+<img src="images/animation.gif"
      alt="game animation"
      style="margin-right: 10px;" />
 
@@ -161,5 +161,5 @@ This is the list of files must be the following, named after the chip names:
  - 54xx.bin
 
 This is the picture of the coin-op:<br>
-<img src="https://portalvhds7yxyw9gmh5cw6.blob.core.windows.net/wasm-binary-files/coinop.jpg">
+<img src="images/galaga_coinop.jpeg">
 
